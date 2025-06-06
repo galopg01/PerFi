@@ -1,0 +1,305 @@
+@import 'tailwindcss';
+
+/* Variables CSS para colores */
+:root {
+  --background-light: #F8FAFC;
+  --background-dark: #0D1117;
+
+  --background-toggle-light:var(--primary);
+  --background-toggle-dark: transparent;
+  --background-toggle-base: var(--background-light);
+  
+  --surface-light: #FFFFFF;
+  --surface-dark: #161B22;
+
+  --text-light: #1E1E1E;
+  --text-dark: #FFFFFF;
+
+  --muted-light: #6B7280;
+  --muted-dark: #B0BEC5;
+
+  --border-light: #E2E8F0;
+  --border-dark: #2A2F36;
+
+  --primary: #2ECC71;
+  --primary-dark: #27AE60;
+}
+
+.dark {
+  --background-toggle-light : transparent;
+  --background-toggle-dark : var(--primary);
+  --background-toggle-base: var(--surface-dark);
+}
+
+ @layer utilities {
+  /* Backgrounds */
+  .bg-background-light {
+    background-color: var(--background-light);
+  }
+  .bg-background-header {
+    background-color: rgba(248, 250, 252, 0.9);
+  }
+  .bg-background-dark {
+    background-color: var(--background-dark);
+  }
+  .bg-surface-light {
+    background-color: var(--surface-light);
+  }
+  .bg-surface-dark {
+    background-color: var(--surface-dark);
+  }
+  .bg-primary {
+    background-color: var(--primary);
+  }
+  .bg-primary-dark {
+    background-color: var(--primary-dark);
+  }
+  .bg-background-toggle-light {
+    background-color: var(--background-toggle-light);
+  }
+  .bg-background-toggle-dark {
+    background-color: var(--background-toggle-dark);
+  }
+  .bg-background-toggle-base {
+    background-color: var(--background-toggle-base);
+  }
+
+  /* Text colors */
+  .text-primary {
+    color: var(--primary);
+  }
+  .text-text-light {
+    color: var(--text-light);
+  }
+  .text-text-dark {
+    color: var(--text-dark);
+  }
+  .text-muted-light {
+    color: var(--muted-light);
+  }
+  .text-muted-dark {
+    color: var(--muted-dark);
+  }
+
+  /* Borders */
+  .border-border-light {
+    border-color: var(--border-light);
+  }
+  .border-border-dark {
+    border-color: var(--border-dark);
+  }
+
+  /* Font family */
+  .font-sans {
+    font-family: var(--font-inter);
+  }
+
+  .font-merriweather {
+    font-family: var(--font-merriweather), serif;
+  }
+
+  /* Dark variants */
+  .dark .bg-background-header {
+    background-color: rgba(13, 17, 23, 0.85);
+  }
+  .dark .bg-background-toggle-light {
+    background-color: var(--background-toggle-light);
+  }
+  .dark .bg-background-toggle-dark {
+    background-color: var(--background-toggle-dark);
+  }
+  .dark .bg-background-light {
+    background-color: var(--background-dark);
+  }
+  .dark .bg-surface-light {
+    background-color: var(--surface-dark);
+  }
+
+  .dark .text-text-light {
+    color: var(--text-dark);
+  }
+  .dark .text-text-dark {
+    color: var(--text-light);
+  }
+  .dark .text-muted-light {
+    color: var(--muted-dark);
+  }
+
+  .dark .border-border-light {
+    border-color: var(--border-dark);
+  }
+}
+
+
+/* Configuración base para fuentes y suavizado */
+html {
+  @apply scroll-smooth antialiased;
+}
+
+body {
+  background-color: var(--background-light);
+  color: var(--text-light);
+  @apply min-h-screen transition-colors duration-300;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Modo oscuro */
+.dark body {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+/* Elementos básicos */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-light);
+  font-weight: 700;
+}
+
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: var(--text-dark);
+}
+
+p {
+  color: var(--muted-light);
+  line-height: 1.625; /* leading-relaxed */
+}
+
+.dark p {
+  color: var(--muted-dark);
+}
+
+/* Links */
+a {
+  transition: color 0.05s ease-in-out;
+}
+
+.dark a {
+  transition: color 0.05s ease-in-out;
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+/* Botones básicos */
+button.btn, .btn {
+  background-color: var(--primary);
+  color: var(--text-light);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem; /* rounded-lg */
+  transition: background-color 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+button.btn:hover {
+  background-color: var(--primary-dark);
+}
+
+.dark button.btn, .dark .btn {
+  background-color: var(--primary);
+  color: var(--text-dark)
+}
+
+button:hover {
+  background-color: var(--background-light);
+  color: var(--text-light);
+}
+
+.dark button:hover {
+  background-color: var(--primary-dark);
+  color: var(--text-dark);
+}
+
+/* Botón secundario para paginación */
+.btn-secondary {
+  padding: 0.25rem 0.75rem;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  border-color: var(--border-light);
+  cursor: pointer;
+}
+
+.btn-secondary:hover{
+  background-color: var(--background-light);
+  color: var(--text-light);
+}
+
+.btn-secondary[disabled], .btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dark .btn-secondary {
+  border-color: var(--border-dark);
+}
+
+.dark .btn-secondary:hover {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+/* Inputs / Forms */
+select {
+  background-color: var(--surface-light);
+  color: var(--text-light);
+  border: 1px solid var(--border-light);
+  border-radius: 0.375rem; /* rounded */
+  padding: 0.5rem 0.75rem;
+  width: 100%;
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+}
+
+input, textarea {
+  padding: 0.5rem 0.75rem;
+}
+
+.dark input, .dark select, .dark textarea {
+  background-color: var(--surface-dark);
+  color: var(--text-dark);
+  border-color: var(--border-dark);
+}
+
+.dark input[type="number"] {
+  color-scheme: dark;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+select:hover {
+  background-color: var(--background-light);
+}
+
+.dark select:hover {
+  background-color: var(--background-dark);
+}
+
+/* Tarjetas */
+.card {
+  background-color: var(--surface-light);
+  color: var(--text-light);
+  border: 1px solid var(--border-light);
+  padding: 1.5rem;
+  border-radius: 1.5rem; /* rounded-2xl */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.dark .card {
+  background-color: var(--surface-dark);
+  color: var(--text-dark);
+  border-color: var(--border-dark);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 8px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #444;
+}
