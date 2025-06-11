@@ -42,7 +42,7 @@ export default function Amortization() {
   // Auto-cierre del error a los 5 segundos
   useEffect(() => {
     if (!error) return;
-    const timeout = setTimeout(() => setError(null), 1000000);
+    const timeout = setTimeout(() => setError(null), 10000);
     return () => clearTimeout(timeout);
   }, [error]);
 
