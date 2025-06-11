@@ -61,7 +61,7 @@ export default function Header() {
         </nav>    
       </div>
       <div className="flex gap-2">
-            <div className='mr-4'>
+            <div className='sm:mr-0 mr-4'>
                 <ThemeToggle />
             </div>
             <HamburgerMenu />
