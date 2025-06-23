@@ -3,13 +3,28 @@
 import "../globals.css";
 import GenericTable from "../components/table";
 import GenericForm from "../components/form";
+import CheeseGraph from "../components/graphs/cheeseGraph";
+import LineChart from "../components/graphs/lineChart"; 
 import { useEffect, useState } from 'react';
 import ErrorAlert from "../components/errorAlert";
 
+type AmortizationRow = {
+  month: number | string;
+  payment: string | number;
+  principal: string | number;
+  interest: string | number;
+  balance: string | number;
+};
+
+type AmortizationColumn = {
+  key: keyof AmortizationRow;
+  label: string;
+};
+
 export default function Amortization() {
   const [showTable, setShowTable] = useState(false);
-  const [columns, setColumns] = useState([]);
-  const [data, setData] = useState([]);
+  const [columns, setColumns] = useState<AmortizationColumn[]>([]);
+  const [data, setData] = useState<AmortizationRow[]>([]);
   const [formValues, setFormValues] = useState<any>(null);
   const [error, setError] = useState<string | null>(null); // Nuevo estado para error
 
@@ -39,7 +54,7 @@ export default function Amortization() {
     }
   }, [columns, data, showTable]);
 
-  // Auto-cierre del error a los 5 segundos
+  // Auto-close error after 10 seconds
   useEffect(() => {
     if (!error) return;
     const timeout = setTimeout(() => setError(null), 10000);
@@ -94,21 +109,63 @@ export default function Amortization() {
           <div className="space-y-3">
             <a
               href="#"
-              className="inline-flex items-center gap-1 text-light hover:underline text-base font-medium transition-colors"
+              className="inline-flex items-center gap-1 text-light hover:underline text-[12px] sm:text-base font-medium transition-colors"
               onClick={e => {
                 e.preventDefault();
                 setShowTable(false);
               }}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
               </svg>
               Volver
             </a>
             <GenericTable 
-            columns={columns}
-            data={data}
-          />
+              columns={columns}
+              data={data}
+            />
+            
+            {/* Calculate totals for graph */}
+            {(() => {
+              // Total paid capital
+              const rawCapital = String(data[data.length - 1]["principal"] ?? "0");
+              const cleanCapital = rawCapital.replace(/\./g, '').replace(',', '.');
+              const totalCapital = parseFloat(cleanCapital) || 0;
+
+              // Total paid interests
+              const rawInterest = String(data[data.length - 1]?.["interest"] ?? "0");
+              const cleanInterest = rawInterest.replace(/\./g, '').replace(',', '.');
+              const totalInterest = parseFloat(cleanInterest) || 0;
+
+              return (
+                <CheeseGraph 
+                  title="Distribución de pagos"
+                  data={[
+                    { label: 'Capital', value: totalCapital, color: "#2ECC71" },
+                    { label: 'Intereses', value: totalInterest, color: "#6B7280" }
+                  ]}
+                />
+                
+              );
+            })()}
+
+            <LineChart
+              title="Evolución de capital e intereses"
+              data={data.slice(0, -1).map(row => ({
+                month: row.month,
+                interest: row.interest,
+                principal: row.principal,
+              }))}
+              labels={["Capital", "Intereses"]}
+              fields={["principal", "interest"]}
+              colors={["#2ECC71", "#6B7280"]}
+              xLabel="Año"
+              yLabel="Cantidad (€)"
+              groupBy={row => String(Math.ceil(Number(row.month) / 12)) }
+              info={`Esta gráfica muestra cómo evoluciona el capital amoortizado y los intereses que pagas cada año del préstamo.\n
+              El punto donde ambas líneas se cruzan indica el momento en el que empiezas a amortizar más capital que intereses y es más eficiente amortizar, pues te 
+              permite ahorrar más intereses a lo largo del préstamo.`}
+            /> 
           </div>
           
         ) : (

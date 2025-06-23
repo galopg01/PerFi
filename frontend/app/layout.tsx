@@ -40,9 +40,9 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
         >
-          <div className="flex flex-col min-h-screen size-full px-12">
+          <div className="flex flex-col min-h-screen size-full px-2 [@media(min-width:500px)]:px-12">
             <Header />
-            <main className="flex-1 pt-16 max-w-7xl mx-auto px-4">
+            <main className="flex-1 pt-16 max-w-7xl mx-auto px-2 md:px-4">
               {children}
             </main>  
             <Footer />

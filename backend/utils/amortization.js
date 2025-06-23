@@ -24,7 +24,7 @@ function calculateAmortizationTable(loanAmount, annualInterestRate, loanTermMont
     totalPayment += monthlyPayment;
 
     data.push({
-      period: month,
+      month: month,
       payment: formatNumber(monthlyPayment),
       principal: formatNumber(principal),
       interest: formatNumber(interest),
@@ -33,7 +33,7 @@ function calculateAmortizationTable(loanAmount, annualInterestRate, loanTermMont
   }
 
   data.push({
-    period: 'Total',
+    month: 'Total',
     payment: formatNumber(totalPayment),
     principal: formatNumber(totalPrincipal),
     interest: formatNumber(totalInterest),
@@ -41,7 +41,7 @@ function calculateAmortizationTable(loanAmount, annualInterestRate, loanTermMont
   });
 
   const columns = [
-    { key: 'period', label: 'Período' },
+    { key: 'month', label: 'Mes' },
     { key: 'payment', label: 'Cuota' },
     { key: 'principal', label: 'Amortizado' },
     { key: 'interest', label: 'Interés' },

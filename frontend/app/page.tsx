@@ -9,7 +9,7 @@ export default function Home() {
           Mantén tus finanzas bajo control con 
           <span className="text-primary"> PerFi</span>
         </h1>
-        <p className="text-muted-light dark:text-muted-dark text-lg mt-2 [text-wrap:balance]">
+        <p className="text-muted-light dark:text-muted-dark text-md sm:text-lg mt-2 [text-wrap:balance]">
           Simula tus préstamos, calcula el ahorro real de tus bonificaciones y visualiza cómo crecen tus inversiones con nuestras herramientas inteligentes. Todo en un solo lugar, claro y sin complicaciones.
         </p>
       </div>

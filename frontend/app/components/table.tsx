@@ -12,7 +12,7 @@ type TableProps = {
   pageSize?: number;
 };
 
-const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
+const PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
 
 export default function GenericTable({ columns, data, pageSize = 10 }: TableProps) {
   const [page, setPage] = useState(1);
@@ -88,12 +88,12 @@ export default function GenericTable({ columns, data, pageSize = 10 }: TableProp
   return (
     <>
       <div className="shadow-md sm:rounded-lg">
-        <div className="relative overflow-x-auto">
-          <table className="min-w-full w-full text-sm text-left bg-background-light dark:bg-surface-dark border border-border-light dark:border-border-dark">
-            <thead className="text-xs uppercase bg-surface-light dark:bg-background-dark text-text-light dark:text-muted-dark border-b border-border-light dark:border-border-dark">
+        <div className="relative overflow-x-auto rounded-t-lg">
+          <table className="min-w-full w-full text-[10px] sm:text-sm text-left bg-background-light dark:bg-surface-dark border border-border-light dark:border-border-dark">
+            <thead className="text-[10px] sm:text-xs uppercase bg-surface-light dark:bg-background-dark text-text-light dark:text-muted-dark border-b border-border-light dark:border-border-dark">
               <tr>
                 {columns.map((col) => (
-                  <th key={col.key} scope="col" className="px-4 py-3 font-semibold text-center">
+                  <th key={col.key} scope="col" className="px-2 sm:px-4 py-2 font-semibold text-center">
                     {col.label}
                   </th>
                 ))}
@@ -121,12 +121,12 @@ export default function GenericTable({ columns, data, pageSize = 10 }: TableProp
                         <th
                           key={col.key}
                           scope="row"
-                          className="px-1 py-2 font-medium whitespace-nowrap text-center"
+                          className="px-1 sm:px-4 py-2 font-medium whitespace-nowrap text-center"
                         >
                           {row[col.key]}
                         </th>
                       ) : (
-                        <td key={col.key} className="px-1 py-2 text-center">
+                        <td key={col.key} className="px-1 sm:px-4 py-2 text-center">
                           {row[col.key]}
                         </td>
                       )
@@ -138,7 +138,7 @@ export default function GenericTable({ columns, data, pageSize = 10 }: TableProp
           </table>
         </div>
         <nav
-          className="w-full flex flex-row flex-wrap items-stretch sm:items-center justify-between border-x border-b border-t-0 border-border-light dark:border-border-dark p-2 sm:p-4 gap-y-3 gap-x-2 bg-surface-light dark:bg-background-dark"
+          className="w-full flex flex-row flex-wrap items-stretch sm:items-center justify-between border-x border-b border-t-0 border-border-light dark:border-border-dark p-2 sm:p-4 gap-y-3 gap-x-2 bg-surface-light dark:bg-background-dark rounded-b-lg"
           aria-label="Table navigation"
         >
           {/* Select Pages */}
