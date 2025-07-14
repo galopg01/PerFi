@@ -87,7 +87,7 @@ export default function Amortization() {
 
   return (
     <>
-      <section className="space-y-12 px-4 max-w-5xl mx-auto">
+      <section className="space-y-12 px-4 w-full mx-auto">
         {error && (
           <ErrorAlert
             message={error}
@@ -145,7 +145,6 @@ export default function Amortization() {
                     { label: 'Intereses', value: totalInterest, color: "#6B7280" }
                   ]}
                 />
-                
               );
             })()}
 
@@ -162,7 +161,7 @@ export default function Amortization() {
               xLabel="Año"
               yLabel="Cantidad (€)"
               groupBy={row => String(Math.ceil(Number(row.month) / 12)) }
-              info={`Esta gráfica muestra cómo evoluciona el capital amoortizado y los intereses que pagas cada año del préstamo.\n
+              info={`Esta gráfica muestra cómo evoluciona el capital amortizado y los intereses que pagas cada año del préstamo.\n
               El punto donde ambas líneas se cruzan indica el momento en el que empiezas a amortizar más capital que intereses y es más eficiente amortizar, pues te 
               permite ahorrar más intereses a lo largo del préstamo.`}
             /> 
@@ -171,7 +170,7 @@ export default function Amortization() {
         ) : (
           <div className="flex flex-col gap-6 md:flex-row md:justify-center">
             <div className="py-3 px-2 max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl w-full md:w-1/2 mx-auto md:[text-wrap:balance]">
-              <h2 className="text-xl font-semibold mb-4 text-center md:text-left">Cómo funciona</h2>
+              <h2 className="text-xl font-semibold mb-4 text-center md:text-left">¿Cómo funciona?</h2>
               <ul className="list-disc pl-5 text-sm xl:text-base text-muted-light dark:text-muted-dark space-y-4">
                 <li>Introduce la cantidad, el interés anual y el tiempo restante.</li>
                 <li>Se utiliza el sistema de amortización francés, en el que las cuotas son constantes, pero la proporción entre capital e intereses varía en el tiempo.</li>

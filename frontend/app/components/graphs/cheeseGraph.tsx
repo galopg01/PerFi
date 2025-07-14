@@ -119,6 +119,9 @@ export default function CheeseGraph({ title, data }: CheeseGraphProps) {
               padding: 20,
               boxHeight: 10,
               boxWidth: 25,
+              font: {
+                size: 14
+              },
               generateLabels(chart) {
                 return data.map((d, i) => ({
                   text: d.label,

@@ -5,6 +5,12 @@ export default function Home() {
   return (
     <section className="space-y-8 px-4 max-w-5xl mx-auto">
       <div className="text-center">
+        {/* Badge "Alpha" */}
+        <div className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-[0.7rem] font-semibold transition-colors focus:outline-none text-text border-text/10 gap-1 -mt-4 mb-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-zap -ms-0.5 opacity-60" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path>
+          </svg>
+          Versión Alpha
+      </div>
         <h1 className="font-merriweather font-bold text-primary dark:text-primary-dark w-full lg:w-2/3 mx-auto text-5xl sm:text-6xl leading-[1.1]">
           Mantén tus finanzas bajo control con 
           <span className="text-primary"> PerFi</span>

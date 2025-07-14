@@ -107,6 +107,9 @@ export default function LineChart<T extends Record<string, any>>({
               padding: 20,
               boxHeight: 10,
               boxWidth: 25,
+              font: {
+                size: 14
+              },
               generateLabels: (chart) => {
                 const defaultLabels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
                 return defaultLabels.map((item, i) => ({
@@ -147,17 +150,24 @@ export default function LineChart<T extends Record<string, any>>({
           x: {
             title: {
               display: true,
-              text: xLabel, // Usar el prop
+              text: xLabel,
               color:
                 theme === "dark"
                   ? getComputedStyle(document.documentElement).getPropertyValue("--text-dark").trim() || "#fff"
                   : getComputedStyle(document.documentElement).getPropertyValue("--text-light").trim() || "#1E1E1E",
+              font: {
+                size: 15
+              }
             },
             ticks: {
+              maxRotation: 0,
               color:
                 theme === "dark"
                   ? getComputedStyle(document.documentElement).getPropertyValue("--text-dark").trim() || "#fff"
                   : getComputedStyle(document.documentElement).getPropertyValue("--text-light").trim() || "#1E1E1E",
+              font: {
+                size: 14
+              }
             },
             grid: {
               color:
@@ -169,17 +179,23 @@ export default function LineChart<T extends Record<string, any>>({
           y: {
             title: {
               display: true,
-              text: yLabel, // Usar el prop
+              text: yLabel,
               color:
                 theme === "dark"
                   ? getComputedStyle(document.documentElement).getPropertyValue("--text-dark").trim() || "#fff"
                   : getComputedStyle(document.documentElement).getPropertyValue("--text-light").trim() || "#1E1E1E",
+              font: {
+                size: 15
+              }
             },
             ticks: {
               color:
                 theme === "dark"
                   ? getComputedStyle(document.documentElement).getPropertyValue("--text-dark").trim() || "#fff"
                   : getComputedStyle(document.documentElement).getPropertyValue("--text-light").trim() || "#1E1E1E",
+              font: {
+                size: 14
+              }
             },
             grid: {
               color:
@@ -222,7 +238,7 @@ export default function LineChart<T extends Record<string, any>>({
         </div>
       </div>
       <div className="overflow-x-auto w-full">
-        <canvas ref={canvasRef} className="w-full max-w-xs sm:max-w-md md:max-w-2xl aspect-[2/1] mx-auto block" />
+        <canvas ref={canvasRef} className="w-full max-w-xs sm:max-w-md md:max-w-3xl aspect-[2/1] mx-auto block" />
       </div>
     </div>
   );

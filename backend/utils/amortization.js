@@ -1,4 +1,4 @@
-// backend/utils/amortization.js
+const { formatNumber } = require('./utils');
 
 function calculateAmortizationTable(loanAmount, annualInterestRate, loanTermMonths) {
   const monthlyRate = annualInterestRate / 100 / 12;
@@ -51,12 +51,29 @@ function calculateAmortizationTable(loanAmount, annualInterestRate, loanTermMont
   return { columns, data };
 }
 
-function formatNumber(number) {
-  const formatted = new Intl.NumberFormat('es-ES', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(number);
-  return formatted === '0,00' ? 0 : formatted;
+function calculateMonthlyPayment(loanAmount, annualRate, termMonths) {
+  const monthlyRate = annualRate / 100 / 12;
+  return loanAmount * monthlyRate / (1 - Math.pow(1 + monthlyRate, -termMonths));
 }
 
-module.exports = calculateAmortizationTable;
+function interestForPeriod(loanAmount, termMonths, rate, startMonth, months) {
+  const monthlyRate = rate / 100 / 12;
+  const monthlyPayment = calculateMonthlyPayment(loanAmount, rate, termMonths);
+  let balance = loanAmount;
+  let totalInterest = 0;
+  for (let i = 0; i < termMonths; i++) {
+    const interest = balance * monthlyRate;
+    const principalPaid = monthlyPayment - interest;
+    balance -= principalPaid;
+    if (i >= startMonth && i < startMonth + months) {
+      totalInterest += interest;
+    }
+  }
+  return totalInterest;
+}
+
+module.exports = {
+  calculateAmortizationTable,
+  calculateMonthlyPayment,
+  interestForPeriod
+};
