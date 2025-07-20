@@ -56,9 +56,12 @@ function calculateMonthlyPayment(loanAmount, annualRate, termMonths) {
   return loanAmount * monthlyRate / (1 - Math.pow(1 + monthlyRate, -termMonths));
 }
 
-function interestForPeriod(loanAmount, termMonths, rate, startMonth, months) {
+function interestForPeriod(loanAmount, termMonths, rate, startMonth, months, monthlyPayment) {
   const monthlyRate = rate / 100 / 12;
-  const monthlyPayment = calculateMonthlyPayment(loanAmount, rate, termMonths);
+
+  if (monthlyPayment === undefined || monthlyPayment === null) {
+    monthlyPayment = calculateMonthlyPayment(loanAmount, rate, termMonths);
+  }
   let balance = loanAmount;
   let totalInterest = 0;
   for (let i = 0; i < termMonths; i++) {

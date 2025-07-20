@@ -20,7 +20,7 @@ export default function Header() {
     {
       label: 'Préstamos',
       dropdown: [
-        { href: '/amortizacion', label: 'Tabla de amortización' },
+        { href: '/tablaAmortizacion', label: 'Tabla de amortización' },
         { href: '/calculadoraBonificacion', label: 'Calculadora de bonificaciones' },
         { href: '/calculadoraAmortizacion', label: 'Calculadora de amortización' },
       ],
@@ -79,7 +79,7 @@ export default function Header() {
                 onMouseLeave={() => setOpenDropdown(null)}
               >
                 <span
-                  className={`flex py-2 px-2 font-semibold transition-colors rounded bg-transparent border-none outline-none cursor-pointer
+                  className={`flex items-center py-2 px-2 font-semibold transition-colors rounded bg-transparent border-none outline-none cursor-pointer
                     ${item.dropdown.some((d) => d.href === pathname) || openDropdown === item.label
                       ? 'text-primary dark:text-primary-dark'
                       : 'text-text-light dark:text-text-dark hover:text-primary dark:hover:text-primary-dark'}
@@ -87,10 +87,19 @@ export default function Header() {
                   onClick={() =>
                     setOpenDropdown(openDropdown === item.label ? null : item.label)
                   }
-                  tabIndex={0} // Opcional: para accesibilidad con teclado
+                  tabIndex={0}
                   role="menuitem"
                 >
                   {item.label}
+                  <svg
+                    className={`w-4 h-4 ml-1 transition-transform ${openDropdown === item.label ? "rotate-90" : ""}`}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
                 </span>
                 {openDropdown === item.label && (
                   <div className="absolute left-0 w-56 rounded-lg bg-surface-light dark:bg-surface-dark shadow-lg p-2 z-50">

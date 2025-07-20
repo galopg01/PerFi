@@ -4,12 +4,20 @@ import { usePathname } from "next/navigation";
 
 export default function HamburgerMenu() {
   const [open, setOpen] = useState(false);
+  const [prestamosOpen, setPrestamosOpen] = useState(false);
   const pathname = usePathname();
 
   const navItems = [
     { href: '/', label: 'Inicio' },
-    { href: '/amortization', label: 'Amortización' },
-    { href: '/bonification', label: 'Bonificación' },
+    {
+      label: 'Préstamos',
+      dropdown: [
+        { href: '/tablaAmortizacion', label: 'Tabla de amortización' },
+        { href: '/calculadoraBonificacion', label: 'Calculadora de bonificaciones' },
+        { href: '/calculadoraAmortizacion', label: 'Calculadora de amortización' },
+      ],
+    },
+    { href: '/calculadoraInteresCompuesto', label: 'Calculadora de interés compuesto' },
   ];
 
   return (
@@ -37,24 +45,63 @@ export default function HamburgerMenu() {
       {open && (
         <div
           id="navbar-mobile"
-          className="absolute top-full right-0 mt-2 w-40 rounded-lg bg-surface-light dark:bg-surface-dark shadow-lg p-2 z-50"
+          className="absolute top-full right-0 mt-2 w-64 rounded-lg bg-surface-light dark:bg-surface-dark shadow-lg p-2 z-50"
         >
           <ul className="flex flex-col gap-1">
-            {navItems.map(({ href, label }) => (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className={`block py-2 px-3 rounded transition-colors
-                    ${pathname === href
-                      ? 'text-primary dark:text-primary-dark font-semibold'
-                      : 'text-text-light dark:text-text-dark hover:bg-background-toggle-base dark:hover:bg-background-toggle-dark'}
-                  `}
-                  onClick={() => setOpen(false)}
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
+            {navItems.map((item) =>
+              item.dropdown ? (
+                <li key={item.label}>
+                  <span
+                    className="py-2 px-3 font-semibold cursor-pointer select-none flex items-center"
+                    onClick={() => setPrestamosOpen((prev) => !prev)}
+                  >
+                    {item.label}
+                    <svg
+                      className={`w-4 h-4 ml-2 transition-transform ${prestamosOpen ? "rotate-90" : ""}`}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                  {prestamosOpen && (
+                    <ul className="ml-4 flex flex-col gap-1">
+                      {item.dropdown.map((sub) => (
+                        <li key={sub.href}>
+                          <Link
+                            href={sub.href}
+                            className={`block py-2 px-3 rounded transition-colors
+                              ${pathname === sub.href
+                                ? 'text-primary dark:text-primary-dark font-semibold'
+                                : 'text-text-light dark:text-text-dark hover:bg-background-toggle-base dark:hover:bg-background-toggle-dark'}
+                            `}
+                            onClick={() => setOpen(false)}
+                          >
+                            {sub.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ) : (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={`block py-2 px-3 rounded transition-colors
+                      ${pathname === item.href
+                        ? 'text-primary dark:text-primary-dark font-semibold'
+                        : 'text-text-light dark:text-text-dark hover:bg-background-toggle-base dark:hover:bg-background-toggle-dark'}
+                    `}
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              )
+            )}
           </ul>
         </div>
       )}

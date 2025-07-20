@@ -36,7 +36,7 @@ export default function BonificationCalculator() {
       sessionStorage.setItem("bonificationFormValues", JSON.stringify(formData));
       const payload = {
         loanAmount: Number(formData.loanAmount),
-        termMonths: Number(formData.loanTerm) * 12,
+        termMonths: Number(formData.termMonths),
         baseRate: Number(formData.baseRate),
         bonifiedRate: Number(formData.bonusRate),
         productsBankCost: Number(formData.productsBankCost),
@@ -62,7 +62,7 @@ export default function BonificationCalculator() {
     Number(str.replace(/[^\d,-.]/g, "").replace(",", "."));
 
   return (
-    <section className="space-y-12 px-4 max-w-5xl mx-auto">
+    <section className="space-y-12 px-4 max-w-4xl mx-auto">
       {error && (
         <ErrorAlert
           message={error}
@@ -83,40 +83,45 @@ export default function BonificationCalculator() {
       )}
 
       {!result ? (
-        <div className="flex flex-col gap-6 [@media(min-width:910px)]:flex-row [@media(min-width:910px)]:justify-center">
+        <div className="flex flex-col gap-6 [@media(min-width:815px)]:flex-row [@media(min-width:815px)]:justify-center">
           <div className="py-3 px-2 max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl w-full md:w-1/2 mx-auto md:[text-wrap:balance]">
             <h2 className="text-xl font-semibold mb-4 text-center md:text-left">¿Cómo funciona?</h2>
             <ul className="list-disc pl-5 text-sm xl:text-base text-muted-light dark:text-muted-dark space-y-4">
               <li>Introduce los datos de tu hipoteca y la bonificación que te ofrece el banco.</li>
               <li>A continuación se calcula si realmente te compensa aceptar los productos vinculados o buscar alternativas externas.</li>
-              <li>El resultado te mostrará si el ahorro por intereses supera el coste del seguro exigido.</li>
+              <li>El resultado te mostrará si el ahorro por intereses supera el coste del producto exigido.</li>
             </ul>
           </div>
           <div className="card max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl w-full md:w-1/2 mx-auto">
             <GenericForm
               fields={[
-                { name: "loanAmount", label: "Capital pendiente (€)", type: "number", placeholder: "150000", min: 0, required: true },
-                { name: "loanTerm", label: "Plazo restante (años)", type: "number", placeholder: "30", min: 0, max: 40, required: true },
-                { name: "baseRate", label: "Interés sin bonificaciones (%)", type: "number", step: "0.01", placeholder: "2,5", min: 0.01, required: true },
-                { name: "bonusRate", label: "Diferencial de bonificación (%)", type: "number", step: "0.01", placeholder: "0,25", min: 0.01, required: true },
+                { name: "loanAmount", label: "Capital pendiente", type: "number", step: "0.01", placeholder: "150000", min: 1, max: 100000000, required: true, unit: "€" },
+                { name: "termMonths", label: "Plazo restante", type: "number", placeholder: "360", min: 1, max: 480, required: true, unit: "meses" },
+                { name: "baseRate", label: "Interés anual", type: "number", step: "0.01", placeholder: "2,5", min: 0.01, max: 10000, required: true, unit: "%" },
+                { name: "bonusRate", label: "Bonificación", type: "number", step: "0.01", placeholder: "0,25", min: 0.01, max: formValues?.baseRate ? Number(formValues.baseRate) - 0.01 : 100, required: true, unit: "%" },
                 {
                   name: "productsBankCost",
-                  label: "Coste anual del producto bancario (€)",
+                  label: "Coste producto bancario",
                   type: "number",
                   placeholder: "350",
                   min: 0,
-                  required: true
+                  max: 10000,
+                  required: true,
+                  unit: "€/año"
                 },
                 {
                   name: "productsCost",
-                  label: "Coste anual del producto externo (€)",
+                  label: "Coste producto externo",
                   type: "number",
                   placeholder: "175",
                   min: 0,
-                  required: true
+                  max: 10000,
+                  required: true,
+                  unit: "€/año"
                 },
               ]}
               onSubmit={handleSubmit}
+              onChange={setFormValues}
               buttonText="Calcular ahorro"
               initialValues={formValues || {}}
               columns={2}
@@ -149,22 +154,22 @@ export default function BonificationCalculator() {
             <InfoCard
               title="Cuota sin bonificar"
               value={`${result.baseMonthly} €`}
-              description="Cuota mensual sin productos vinculados"
+              description="Cuota mensual sin productos vinculados."
             />
             <InfoCard
               title="Cuota bonificada"
               value={`${result.bonusMonthly} €`}
-              description="Cuota mensual con bonificación"
+              description="Cuota mensual con bonificación."
             />
             <InfoCard
               title="Ahorro mensual"
               value={`${result.monthlySavings} €`}
-              description="Diferencia mensual entre cuotas"
+              description="Diferencia mensual entre cuotas."
             />
             <InfoCard
               title="Ahorro anual"
               value={`${result.annualSavings} €`}
-              description="Ahorro total anual"
+              description="Ahorro total anual."
             />
           </div>
         </div>
@@ -183,25 +188,26 @@ export default function BonificationCalculator() {
                   {result.productsBankCost} €
                   <span className="text-muted-light dark:text-muted-dark">
                     {" "}
-                    ({parseEuro(result.productsBankCost) + parseEuro(result.annualSavings)} €)
+                    ({(parseEuro(result.productsBankCost) + parseEuro(result.annualSavings)).toFixed(2)} €)
                   </span>
                 </>
               }
-              description="Coste total del producto restando el ahorro anual"
+              description="Coste total del producto restando el ahorro anual."
             />
             <InfoCard
               title="Coste anual del producto externo"
               value={`${result.bonificationCost} €`}
-              description="Coste total del producto externo sin bonificación"
+              description="Coste total del producto externo."
             />
             <InfoCard
-              title="Diferencia mensual (bonificación vs externo)"
+              title="Diferencia mensual"
               value={`${
                 String(result.monthlyDifference).includes("-")
                   ? result.monthlyDifference
                   : `+${result.monthlyDifference}`
               } €`}
-              description="Comparación mensual con productos y costes"
+              description="Comparación mensual del coste de ambos productos."
+              info="Si es positivo, el producto externo es más barato. En caso contrario, lo es el producto bancario."
             />
             <InfoCard
               title="Diferencia anual"
@@ -210,7 +216,7 @@ export default function BonificationCalculator() {
                   ? result.annualDifference
                   : `+${result.annualDifference}`
               } €`}
-              description="Diferencia total al año incluyendo bonificación"
+              description="Diferencia total al año incluyendo bonificación."
             />
           </div>
         </div>
@@ -226,13 +232,14 @@ export default function BonificationCalculator() {
               const interest = result[`savedInterest${year}`];
               const annualDiff = result[`annualInterestDifference${year}`];
               const monthlyDiff = result[`monthlyInterestDifference${year}`];
-              const isFavorable = Number(annualDiff.replace(",", ".").replace("€", "")) >= 0;
+              console.log("Result")
+              const isFavorable = Number((annualDiff || "0").replace(",", ".").replace("€", "")) >= 0;
               return (
                 <InfoCard
                   key={year}
                   title={`Año ${year}`}
                   value={`${interest} €`}
-                  description={`Diferencia de costes considerando únicamente intereses: ${annualDiff} € (${monthlyDiff} €/mes) a favor del ${isFavorable ? "externo" : "banco"}`}
+                  description={`Diferencia de costes considerando únicamente intereses: ${annualDiff} € (${monthlyDiff} €/mes) a favor del ${isFavorable ? "externo" : "banco"}.`}
                 />
               );
             })}
@@ -241,7 +248,8 @@ export default function BonificationCalculator() {
 
         {/* Veredicto comparado: ¿cuál compensa más según el flujo anual? */}
         {(() => {
-          const annualDiff = Number(result.annualDifference.replace(",", ".").replace("€", ""));
+          console.log("Result:", result.annualDifference);
+          const annualDiff = Number((result.annualDifference || "0").replace(",", ".").replace("€", ""));
           const interestDiff = Number(result.annualInterestDifference1.replace(",", ".").replace("€", ""));
 
           const betterByFlow = annualDiff < 0;

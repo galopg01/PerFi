@@ -26,14 +26,14 @@ export default function Amortization() {
   const [columns, setColumns] = useState<AmortizationColumn[]>([]);
   const [data, setData] = useState<AmortizationRow[]>([]);
   const [formValues, setFormValues] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null); // Nuevo estado para error
+  const [error, setError] = useState<string | null>(null);
 
   // Restore stored data
   useEffect(() => {
     const savedColumns = localStorage.getItem("amortizationColumns");
     const savedData = localStorage.getItem("amortizationData");
     const savedShowTable = sessionStorage.getItem("amortizationShowTable");
-    const savedForm = sessionStorage.getItem("amortizationFormValues"); // Recupera el form
+    const savedForm = sessionStorage.getItem("amortizationFormValues");
 
     if (savedColumns && savedData) {
       setColumns(JSON.parse(savedColumns));
@@ -61,7 +61,7 @@ export default function Amortization() {
     return () => clearTimeout(timeout);
   }, [error]);
 
-  // Guarda los datos del formulario
+  // Keep form data
   const handleSubmit = async (formData: any) => {
     try {
        
@@ -181,9 +181,9 @@ export default function Amortization() {
             <div className="card max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl w-full md:w-1/2 mx-auto">
               <GenericForm 
                 fields={[
-                  { name: 'loanAmount', label: 'Cantidad', type: 'number', placeholder: '10000', min: 0, required: true },
-                  { name: 'interestRate', label: 'Interés anual (%)', type: 'number', placeholder: '2,5', min: 0, step: '0.01', required: true },
-                  { name: 'loanTerm', label: 'Plazo (meses)', type: 'number', placeholder: '360', min: 0, max: 480, required: true },
+                  { name: 'loanAmount', label: 'Cantidad', type: 'number', placeholder: '10000', min: 1, step: '0.01', required: true, unit: "€" },
+                  { name: 'interestRate', label: 'Interés anual', type: 'number', placeholder: '2,5', min: 0.01, max: 100, step: '0.01', required: true, unit: "%" },
+                  { name: 'loanTerm', label: 'Plazo', type: 'number', placeholder: '360', min: 1, max: 480, required: true, unit: "meses" },
                 ]}
                 onSubmit={handleSubmit}
                 buttonText="Calcular tabla de amortización"
